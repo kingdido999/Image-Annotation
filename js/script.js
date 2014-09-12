@@ -1,8 +1,6 @@
 /**
- * Description: This script handles front-end mouse events and loads annotations using AJAX. 
- 				It's based on Annotorious API: http://annotorious.github.io/api.html
- * Related File: Image-Annotation.php
- * Author: Desmond Ding
+ *	This script handles front-end mouse events and loads annotations using AJAX.
+ *	It's based on Annotorious API: http://annotorious.github.io/api.html
  */
 
 var $ = jQuery.noConflict();
@@ -50,7 +48,7 @@ $(document).ready(function() {
 		});
 	});
 
-	
+	// Show annotations when mouse enters the image
 	$('img.size-full, img.size-large').mouseenter(function() {
 		var url = $(this)[0]['src'];
 
@@ -59,6 +57,7 @@ $(document).ready(function() {
 		anno.showAnnotations(url);
 	});
 
+	// Hide annotations when mouse leaves the image
 	$('.annotorious-annotationlayer').mouseleave(function() {
 		var url = $(this).find('img')[0]['src'];
 
