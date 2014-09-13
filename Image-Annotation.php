@@ -29,11 +29,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 defined('ABSPATH') or die("No script kiddies please!");
 
+include_once(plugin_dir_path(__FILE__) . 'options.php');
+
+// Add scripts
 function annotorious_scripts() {
-	wp_enqueue_style( 'annotorious-css', plugin_dir_url(__FILE__) . 'css/annotorious.css' );
-	//wp_enqueue_style( 'annotorious-css', plugin_dir_url(__FILE__) . 'css/theme-dark/annotorious-dark.css' );
+	wp_enqueue_style( 'annotorious-css', annotorious_get_theme_path() );
 	wp_enqueue_script( 'annotorious-js', plugin_dir_url(__FILE__) . 'js/annotorious.min.js');
 	wp_enqueue_script( 'script-js', plugin_dir_url(__FILE__) . 'js/script.js', array('jquery', 'annotorious-js'));
+	$translation_array = array( 'imageSelector' => annotorious_get_image_selector());
+	wp_localize_script( 'script-js', 'annotorious_translation_array', $translation_array );
 }
 add_action( 'wp_enqueue_scripts', 'annotorious_scripts' );
 

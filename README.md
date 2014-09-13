@@ -11,6 +11,11 @@ You can download the zip file and install it in WordPress Dashboard->Plugins->Ad
 
 ## History
 
+**Version 0.1.2** (09/13/2014):
+- Add plugin settings page
+	- Switch between two themes
+	- Customize image selector (users can now specify the images they want to annotate)
+
 **Version 0.1.1** (09/12/2014):
 - Resolve unxpected output warning message after plugin activation
 - Correct position of edit textboxes (not showing right below the annotation in previous version)

@@ -6,8 +6,10 @@
 var $ = jQuery.noConflict();
 
 $(document).ready(function() {
+	var imageSelector = annotorious_translation_array.imageSelector;
+
 	// Load available annotations
-	$('img.size-full, img.size-large').each(function() {
+	$(imageSelector).each(function() {
 		anno.makeAnnotatable($(this)[0]);
 
 		var url = $(this)[0]['src'];
@@ -49,7 +51,7 @@ $(document).ready(function() {
 	});
 
 	// Show annotations when mouse enters the image
-	$('img.size-full, img.size-large').mouseenter(function() {
+	$(imageSelector).mouseenter(function() {
 		var url = $(this)[0]['src'];
 
 		// Show widget and annotations
@@ -117,7 +119,7 @@ $(document).ready(function() {
 		});
 	});
 
-	// Correct edit textbox css position (for the default theme)
+	// Correct edit textbox css position
 	// This is a css-position bug which shows edit textbox position incorrectly 
 	// caused by the process of adding annotations (reason unknown)
 	$('.annotorious-popup-button.annotorious-popup-button-edit').click(function() {
