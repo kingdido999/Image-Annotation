@@ -9,7 +9,8 @@ $(document).ready(function() {
 	var imageSelector = annotorious_translation_array.imageSelector;
 
 	// Load available annotations
-	$(imageSelector).each(function() {
+	$(imageSelector).one("load", function() {
+		// Only make it annotable after each image is loaded
 		anno.makeAnnotatable($(this)[0]);
 
 		var url = $(this)[0]['src'];

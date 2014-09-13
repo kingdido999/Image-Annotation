@@ -15,6 +15,8 @@ You can download the zip file and install it in WordPress Dashboard->Plugins->Ad
 - Add plugin settings page
 	- Switch between two themes
 	- Customize image selector (users can now specify the images they want to annotate)
+- Fixed the bug that sometimes Annotorious fails to make images annotable
+	- Only make an image annotable and load its annotations after the image is loaded
 
 **Version 0.1.1** (09/12/2014):
 - Resolve unxpected output warning message after plugin activation
