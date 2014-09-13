@@ -54,20 +54,26 @@ $(document).ready(function() {
 	// Show annotations when mouse enters the image
 	$(imageSelector).mouseenter(function() {
 		var url = $(this)[0]['src'];
-
 		// Show widget and annotations
 		anno.showSelectionWidget(url);
 		anno.showAnnotations(url);
 	});
 
-	// Hide annotations when mouse leaves the image
-	$('.annotorious-annotationlayer').mouseleave(function() {
-		var url = $(this).find('img')[0]['src'];
+	
+	// $('.annotorious-annotationlayer').mouseleave(function() {   // DOES NOT TRIGGER...Need to fix
+	// 	var url = $(this).find('img')[0]['src'];
+	// 	// Hide widget and annotations
+	// 	anno.hideSelectionWidget(url);
+	// 	anno.hideAnnotations(url);
+	// });	
 
+	// Hide annotations when mouse leaves the image
+	$('.entry-content').mouseleave(function() {	
 		// Hide widget and annotations
-		anno.hideSelectionWidget(url);
-		anno.hideAnnotations(url);
+		anno.hideSelectionWidget();
+		anno.hideAnnotations();
 	});
+
 
 	// Create annotation
 	anno.addHandler('onAnnotationCreated', function(annotation) {
