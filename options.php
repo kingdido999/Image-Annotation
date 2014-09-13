@@ -40,6 +40,7 @@ function annotorious_options() {
         <tr valign="top">
         <th scope="row">Annotatble Image Selector</th>
         <td>
+        	<?php annotorious_get_image_selector(); ?>
         	<input type="text" name="image-selector" value="<?php echo annotorious_get_image_selector(); ?>" size="40" />
         </td>
         <td>
@@ -56,14 +57,22 @@ function annotorious_options() {
 <?php
 }
 
-$default_options = array(
-	'theme' => 'White',
-	'image-selector' => '.entry-content img'
-);
+// Get default option value
+function annotorious_get_default_option($option) {
+	$default_options = array(
+		'theme' => 'White',
+		'image-selector' => '.entry-content img',
+	);
+
+	if (array_key_exists($option, $default_options)) {
+		return $default_options[$option];
+	}
+}
 
 // Get theme css file path
 function annotorious_get_theme_path() {
-	$default = $default_options['theme'];
+	//$default = $default_options['theme'];
+	$default = annotorious_get_default_option('theme');
 	$theme = get_option('theme', $default);
 	$path = plugin_dir_url(__FILE__);
 	if ($theme == 'White') {
@@ -78,7 +87,7 @@ function annotorious_get_theme_path() {
 
 // Return theme being selected or not
 function annotorious_check_theme($theme) {
-	$default = $default_options['theme'];
+	$default = annotorious_get_default_option('theme');
 	$White_status = 'unchecked';
 	$Dark_status = 'unchecked';
 
@@ -94,7 +103,7 @@ function annotorious_check_theme($theme) {
 
 // Get image selector
 function annotorious_get_image_selector() {
-	$default = $default_options['image-selector'];
+	$default = annotorious_get_default_option('image-selector');
 	return esc_attr( get_option('image-selector', $default));
 }
 
