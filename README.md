@@ -11,6 +11,9 @@ You can download the zip file and install it in WordPress Dashboard->Plugins->Ad
 
 ## History
 
+**Version 0.1.3** (09/20/2014):
+- Add a plugin menu page for viewing all image notes
+
 **Version 0.1.2** (09/13/2014):
 - Add plugin settings page
 	- Switch between two themes

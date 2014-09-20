@@ -3,7 +3,7 @@
  * Plugin Name: Image Annotation
  * Plugin URI: https://github.com/kingdido999/Image-Annotation
  * Description: An image annotation tool based on Annotorious that allows you to crop an area of the image and add notes to it.
- * Version: 0.1.1
+ * Version: 0.1.3
  * Author: Desmond Ding
  * Author URI: http://desmonding.com
  * License: GPL2

@@ -1,0 +1,22 @@
+table, th, td
+{
+	border: 2px solid #666;
+	border-collapse: collapse;
+	font-size: 14px;
+}
+
+th, td
+{
+	padding: 10px;
+}
+
+th
+{
+	background: rgb(140, 202, 105);
+	font-size: large;
+}
+
+img 
+{
+	width: 300px;
+}

@@ -8,6 +8,7 @@ add_action( 'admin_menu', 'annotorious_menu' );
 function annotorious_menu() {
 	add_options_page( 'Image Annotation Options', 'Image Annotation', 'manage_options', 'image-annotation', 'annotorious_options' );
 	add_action( 'admin_init', 'annotorious_register_settings');
+	add_menu_page( 'Image Annotation Notes', 'Image Notes', 'manage_options', 'image-notes', 'annotorious_notes', 'dashicons-format-image', 26);
 }
 
 function annotorious_register_settings() {
@@ -56,6 +57,22 @@ function annotorious_options() {
 
 <?php
 }
+
+// The page that displays image notes
+function annotorious_notes() {
+	if ( !current_user_can( 'manage_options' ) )  {
+		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+	}
+
+	wp_enqueue_style( 'annotorious-options-css', plugin_dir_url(__FILE__) . 'css/options.css' );
+?>
+	<div class="wrap">
+		<h2>Image Annotation Notes</h2>
+		<?php annotorious_get_notes(); ?>
+	</div>
+<?php
+}
+
 
 // Get default option value
 function annotorious_get_default_option($option) {
@@ -112,4 +129,33 @@ function annotorious_reset_options() {
 	foreach ( $default_options as $option => $default_value ) {
 		update_option( $option, $default_value );
 	}
+}
+
+// Get image notes
+function annotorious_get_notes() {
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'annotorious';
+	$results = $wpdb->get_results( "SELECT id, time, text, url FROM $table_name ORDER BY time DESC" );
+
+	echo '<table class="image-notes-table">';
+	echo '<th>ID</th>';
+	echo '<th>Image</th>';
+	echo '<th>Notes</th>';
+	echo '<th>AddTime</th>';
+
+	foreach ($results as $row) {
+		$id = $row->id;
+		$time = $row->time;
+		$note = $row->text;
+		$url = $row->url;
+
+		echo '<tr>';
+		echo '<td>' . $id . '</td>';
+		echo '<td><img src="' . $url . '"></td>';
+		echo '<td>' . $note . '</td>';
+		echo '<td>' . $time . '</td>';
+		echo '</tr>';
+	}
+
+	echo '</table>';
 }
