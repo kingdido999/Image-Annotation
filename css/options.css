@@ -1,22 +1,22 @@
-table, th, td
+.image-notes-table, .image-notes-table th, .image-notes-table td
 {
 	border: 2px solid #666;
 	border-collapse: collapse;
 	font-size: 14px;
 }
 
-th, td
+.image-notes-table th, .image-notes-table td
 {
 	padding: 10px;
 }
 
-th
+.image-notes-table th
 {
 	background: rgb(140, 202, 105);
 	font-size: large;
 }
 
-img 
+.image-notes-table img 
 {
 	width: 300px;
 }

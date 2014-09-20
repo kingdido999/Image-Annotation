@@ -5,18 +5,25 @@
  */
 add_action( 'admin_menu', 'annotorious_menu' );
 
+// Add option page and notes page
 function annotorious_menu() {
 	add_options_page( 'Image Annotation Options', 'Image Annotation', 'manage_options', 'image-annotation', 'annotorious_options' );
-	add_action( 'admin_init', 'annotorious_register_settings');
 	add_menu_page( 'Image Annotation Notes', 'Image Notes', 'manage_options', 'image-notes', 'annotorious_notes', 'dashicons-format-image', 26);
+	add_action( 'admin_init', 'annotorious_register_settings');
 }
 
+// Register options
 function annotorious_register_settings() {
 	register_setting( 'annotorious-settings-group', 'theme' );
 	register_setting( 'annotorious-settings-group', 'image-selector' );
+	wp_enqueue_style( 'annotorious-options-css', plugin_dir_url(__FILE__) . 'css/options.css' );
+	wp_enqueue_script( 'options-js', plugin_dir_url(__FILE__) . 'js/options.js', array('jquery'));
 }
 
-// Options page layout
+
+/*
+ * Options page
+ */
 function annotorious_options() {
 	if ( !current_user_can( 'manage_options' ) )  {
 		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
@@ -58,22 +65,6 @@ function annotorious_options() {
 <?php
 }
 
-// The page that displays image notes
-function annotorious_notes() {
-	if ( !current_user_can( 'manage_options' ) )  {
-		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
-	}
-
-	wp_enqueue_style( 'annotorious-options-css', plugin_dir_url(__FILE__) . 'css/options.css' );
-?>
-	<div class="wrap">
-		<h2>Image Annotation Notes</h2>
-		<?php annotorious_get_notes(); ?>
-	</div>
-<?php
-}
-
-
 // Get default option value
 function annotorious_get_default_option($option) {
 	$default_options = array(
@@ -88,7 +79,6 @@ function annotorious_get_default_option($option) {
 
 // Get theme css file path
 function annotorious_get_theme_path() {
-	//$default = $default_options['theme'];
 	$default = annotorious_get_default_option('theme');
 	$theme = get_option('theme', $default);
 	$path = plugin_dir_url(__FILE__);
@@ -131,8 +121,26 @@ function annotorious_reset_options() {
 	}
 }
 
+/*
+ * Image notes menu page
+ */
+function annotorious_notes() {
+	if ( !current_user_can( 'manage_options' ) )  {
+		wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
+	}
+?>
+	<div class="wrap">
+		<h2>Image Annotation Notes</h2>
+		<form method="post" action="">
+			<?php annotorious_show_notes(); ?>
+			<?php annotorious_delete_note(); ?>
+		</form>
+	</div>
+<?php
+}
+
 // Get image notes
-function annotorious_get_notes() {
+function annotorious_show_notes() {
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'annotorious';
 	$results = $wpdb->get_results( "SELECT id, time, text, url FROM $table_name ORDER BY time DESC" );
@@ -142,20 +150,38 @@ function annotorious_get_notes() {
 	echo '<th>Image</th>';
 	echo '<th>Notes</th>';
 	echo '<th>AddTime</th>';
+	echo '<th>More</th>';
 
 	foreach ($results as $row) {
 		$id = $row->id;
 		$time = $row->time;
 		$note = $row->text;
 		$url = $row->url;
+		$delete = '<input type="button" name="delete" value="Delete" />';
 
 		echo '<tr>';
-		echo '<td>' . $id . '</td>';
+		echo '<td class="note-id">' . $id . '</td>';
 		echo '<td><img src="' . $url . '"></td>';
 		echo '<td>' . $note . '</td>';
 		echo '<td>' . $time . '</td>';
+		echo '<td>' . $delete . '</td>';
 		echo '</tr>';
 	}
 
 	echo '</table>';
+}
+
+// Delete an image note
+add_action( 'wp_ajax_delete_note', 'annotorious_delete_note' );
+add_action( 'wp_ajax_nopriv_delete_note', 'annotorious_delete_note' );
+function annotorious_delete_note() {
+	$post = json_encode($_POST);
+	$post = json_decode($post, true);
+	$id = $post['object'];
+
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'annotorious';
+	$where = array( 'id' => $id);
+
+	$wpdb->delete($table_name, $where);
 }
