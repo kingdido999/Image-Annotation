@@ -39,7 +39,9 @@ $(document).ready(function() {
 			  					width: object['width'],
 			  					height: object['height']
 			  				}
-			  			}]
+			  			}],
+			  			// annotations cannot be deleted
+			  			editable: false
 			  		}
 
 			  		// Widgets and annotations are hidden by default
@@ -59,8 +61,8 @@ $(document).ready(function() {
 		anno.showAnnotations(url);
 	});
 
-	
-	// $('.annotorious-annotationlayer').mouseleave(function() {   // DOES NOT TRIGGER...Need to fix
+	// DOES NOT TRIGGER...Need to fix
+	// $('.annotorious-annotationlayer').mouseleave(function() {
 	// 	var url = $(this).find('img')[0]['src'];
 	// 	// Hide widget and annotations
 	// 	anno.hideSelectionWidget(url);
@@ -77,36 +79,46 @@ $(document).ready(function() {
 
 	// Create annotation
 	anno.addHandler('onAnnotationCreated', function(annotation) {
-		var data = {
-			action: 'create',
-			object: annotation
-		};
+		if (annotation.text) {
+			var data = {
+				action: 'create',
+				object: annotation
+			};
 
-		$.ajax({
-			  type: "POST",
-			  url: ajaxurl,
-			  data: data,
-			  success: function(response) {
-			  	//console.log(response);
-			  }
-		});
+			$.ajax({
+				  type: "POST",
+				  url: ajaxurl,
+				  data: data,
+				  success: function(response) {
+				  	//console.log(response);
+				  }
+			});
+		} else {
+			// if the text is empty, remove the annotation
+			anno.removeAnnotation(annotation);
+		}
 	});
 
 	// Update annotation
 	anno.addHandler('onAnnotationUpdated', function(annotation) {
-		var data = {
-			action: 'update',
-			object: annotation
-		};
+		if (annotation.text) {
+			var data = {
+				action: 'update',
+				object: annotation
+			};
 
-		$.ajax({
-			  type: "POST",
-			  url: ajaxurl,
-			  data: data,
-			  success: function(response) {
-			  	//console.log(response);
-			  }
-		});
+			$.ajax({
+				  type: "POST",
+				  url: ajaxurl,
+				  data: data,
+				  success: function(response) {
+				  	//console.log(response);
+				  }
+			});
+		} else {
+			// if the text is empty, remove the annotation
+			anno.removeAnnotation(annotation);
+		}
 	});	
 
 	// Remove annotation

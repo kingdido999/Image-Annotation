@@ -70,6 +70,7 @@ function annotorious_get_default_option($option) {
 	$default_options = array(
 		'theme' => 'White',
 		'image-selector' => '.entry-content img',
+		'editable' => false
 	);
 
 	if (array_key_exists($option, $default_options)) {
@@ -112,6 +113,11 @@ function annotorious_check_theme($theme) {
 function annotorious_get_image_selector() {
 	$default = annotorious_get_default_option('image-selector');
 	return esc_attr( get_option('image-selector', $default));
+}
+
+// Get editable
+function annotorious_get_editable() {
+
 }
 
 // Reset options

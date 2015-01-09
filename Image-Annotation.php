@@ -36,7 +36,10 @@ function annotorious_scripts() {
 	wp_enqueue_style( 'annotorious-css', annotorious_get_theme_path() );
 	wp_enqueue_script( 'annotorious-js', plugin_dir_url(__FILE__) . 'js/annotorious.min.js');
 	wp_enqueue_script( 'script-js', plugin_dir_url(__FILE__) . 'js/script.js', array('jquery', 'annotorious-js'));
-	$translation_array = array( 'imageSelector' => annotorious_get_image_selector());
+	$translation_array = array(
+		'imageSelector' => annotorious_get_image_selector()
+		//'editable' => annotorious_get_editable()
+		);
 	wp_localize_script( 'script-js', 'annotorious_translation_array', $translation_array );
 }
 add_action( 'wp_enqueue_scripts', 'annotorious_scripts' );
@@ -111,6 +114,7 @@ function annotorious_create_annotation() {
 	$table_name = $wpdb->prefix . 'annotorious';
 	$post = json_encode($_POST);
 	$post = json_decode($post, true);
+
 	$object = $post['object'];
 	$geometry = $object['shapes'][0]['geometry'];
 	$url = $object['src'];
@@ -140,6 +144,7 @@ function annotorious_update_annotation() {
 	$table_name = $wpdb->prefix . 'annotorious';
 	$post = json_encode($_POST);
 	$post = json_decode($post, true);
+
 	$object = $post['object'];
 	$geometry = $object['shapes'][0]['geometry'];
 	$url = $object['src'];
@@ -172,6 +177,7 @@ function annotorious_delete_annotation() {
 	$table_name = $wpdb->prefix . 'annotorious';
 	$post = json_encode($_POST);
 	$post = json_decode($post, true);
+
 	$object = $post['object'];
 	$geometry = $object['shapes'][0]['geometry'];
 	$url = $object['src'];
