@@ -36,10 +36,13 @@ function annotorious_scripts() {
 	wp_enqueue_style( 'annotorious-css', annotorious_get_theme_path() );
 	wp_enqueue_script( 'annotorious-js', plugin_dir_url(__FILE__) . 'js/annotorious.min.js');
 	wp_enqueue_script( 'script-js', plugin_dir_url(__FILE__) . 'js/script.js', array('jquery', 'annotorious-js'));
+	
 	$translation_array = array(
-		'imageSelector' => annotorious_get_image_selector()
-		//'editable' => annotorious_get_editable()
+		'imageSelector' => annotorious_get_image_selector(),
+		'editable' => annotorious_get_editable()
 		);
+
+	// make this array usable in script.js
 	wp_localize_script( 'script-js', 'annotorious_translation_array', $translation_array );
 }
 add_action( 'wp_enqueue_scripts', 'annotorious_scripts' );

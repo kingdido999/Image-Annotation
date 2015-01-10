@@ -7,6 +7,7 @@ var $ = jQuery.noConflict();
 
 $(document).ready(function() {
 	var imageSelector = annotorious_translation_array.imageSelector;
+	var editable = (annotorious_translation_array.editable === 'true');
 
 	// Load available annotations
 	$(imageSelector).one("load", function() {
@@ -40,8 +41,7 @@ $(document).ready(function() {
 			  					height: object['height']
 			  				}
 			  			}],
-			  			// annotations cannot be deleted
-			  			editable: false
+			  			editable: editable
 			  		}
 
 			  		// Widgets and annotations are hidden by default

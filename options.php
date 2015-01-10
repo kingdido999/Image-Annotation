@@ -1,8 +1,12 @@
 <?php
 /*
  *	Plugin Options Page
- * 	Options: Theme, Annotable Image Selector
+ * 	Options: 
+ 		- Theme
+ 		- Annotable Image Selector
+ 		- Editable
  */
+
 add_action( 'admin_menu', 'annotorious_menu' );
 
 // Add option page and notes page
@@ -16,6 +20,8 @@ function annotorious_menu() {
 function annotorious_register_settings() {
 	register_setting( 'annotorious-settings-group', 'theme' );
 	register_setting( 'annotorious-settings-group', 'image-selector' );
+	register_setting( 'annotorious-settings-group', 'editable' );
+
 	wp_enqueue_style( 'annotorious-options-css', plugin_dir_url(__FILE__) . 'css/options.css' );
 	wp_enqueue_script( 'options-js', plugin_dir_url(__FILE__) . 'js/options.js', array('jquery'));
 }
@@ -37,6 +43,8 @@ function annotorious_options() {
     <?php settings_fields( 'annotorious-settings-group' ); ?>
     <?php do_settings_sections( 'annotorious-settings-group' ); ?>
     <table class="form-table">
+
+    	<!-- Theme -->
         <tr valign="top">
         <th scope="row">Theme</th>
         <td>
@@ -45,6 +53,7 @@ function annotorious_options() {
         </td>
         </tr>
 
+        <!-- Annotable Image Selector -->
         <tr valign="top">
         <th scope="row">Annotatble Image Selector</th>
         <td>
@@ -54,7 +63,19 @@ function annotorious_options() {
         <td>
         	<p>This selector corresponds to the images that are annotatble on your website, the default should be working fine for most WordPress themes. Do <strong>NOT</strong> modify this unless you understand what you're doing.</p>
         </td>
-        </tr>        
+        </tr>      
+
+        <!-- Editable -->
+        <tr valign="top">
+        <th scope="row">Editable</th>
+        <td>
+        	<input type="checkbox" name="editable" value="true" <?php echo annotorious_check_editable(); ?> >Enable notes editing
+        </td>
+        <td>
+        	<p>Allows user to edit/delete the notes.</p>
+        </td>
+        </tr>
+
     </table>
     
     <?php submit_button(); ?>
@@ -109,15 +130,22 @@ function annotorious_check_theme($theme) {
 	return ($theme == 'White') ? $White_status : $Dark_status;
 }
 
+// Return editable or not
+function annotorious_check_editable() {
+	$default = annotorious_get_default_option('editable');
+	return get_option('editable', $default) ? 'checked' : 'unchecked';
+}
+
 // Get image selector
 function annotorious_get_image_selector() {
 	$default = annotorious_get_default_option('image-selector');
-	return esc_attr( get_option('image-selector', $default));
+	return esc_attr(get_option('image-selector', $default));
 }
 
 // Get editable
 function annotorious_get_editable() {
-
+	$default = annotorious_get_default_option('editable');
+	return esc_attr(get_option('editable', $default)) ? 'true' : 'false';
 }
 
 // Reset options
