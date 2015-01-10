@@ -7,9 +7,13 @@ This plugin is based on [Annotorious API](http://annotorious.github.io/api.html)
 
 ## Installation
 
-You can download the zip file and install it in WordPress Dashboard->Plugins->Add New->Upload Plugin.
+You can download the zip file and install it via WordPress Dashboard->Plugins->Add New->Upload Plugin.
 
 ## History
+
+**Version 0.1.4** (01/09/2015):
+- Option to enable/disable notes editing
+- Hide save button when textarea is empty to prevent user from saving empty notes (tricky one!)
 
 **Version 0.1.3** (09/20/2014):
 - Add a plugin menu page for viewing all image notes
