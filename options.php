@@ -91,7 +91,7 @@ function annotorious_get_default_option($option) {
 	$default_options = array(
 		'theme' => 'White',
 		'image-selector' => '.entry-content img',
-		'editable' => false
+		'editable' => true
 	);
 
 	if (array_key_exists($option, $default_options)) {
