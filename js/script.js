@@ -69,46 +69,36 @@ $(document).ready(function() {
 
 	// Create annotation
 	anno.addHandler('onAnnotationCreated', function(annotation) {
-		if (annotation.text) {
-			var data = {
-				action: 'create',
-				object: annotation
-			};
+		var data = {
+			action: 'create',
+			object: annotation
+		};
 
-			$.ajax({
-				  type: "POST",
-				  url: ajaxurl,
-				  data: data,
-				  success: function(response) {
-				  	//console.log(response);
-				  }
-			});
-		} else {
-			// if the text is empty, remove the annotation
-			anno.removeAnnotation(annotation);
-		}
+		$.ajax({
+			  type: "POST",
+			  url: ajaxurl,
+			  data: data,
+			  success: function(response) {
+			  	//console.log(response);
+			  }
+		});
 	});
 
 	// Update annotation
 	anno.addHandler('onAnnotationUpdated', function(annotation) {
-		if (annotation.text) {
-			var data = {
-				action: 'update',
-				object: annotation
-			};
+		var data = {
+			action: 'update',
+			object: annotation
+		};
 
-			$.ajax({
-				  type: "POST",
-				  url: ajaxurl,
-				  data: data,
-				  success: function(response) {
-				  	//console.log(response);
-				  }
-			});
-		} else {
-			// if the text is empty, remove the annotation
-			anno.removeAnnotation(annotation);
-		}
+		$.ajax({
+			  type: "POST",
+			  url: ajaxurl,
+			  data: data,
+			  success: function(response) {
+			  	//console.log(response);
+			  }
+		});
 	});	
 
 	// Remove annotation
@@ -135,5 +125,20 @@ $(document).ready(function() {
 		var top = $(this).parent().parent().css("top");
 		var editor = $(this).parent().parent().next();
 		editor.css("top", top);
+	});
+
+	// Show the save button only when the textarea is not empty
+	// so that no empty notes will be saved to database
+	$(document).on('focus', '.annotorious-editor-text.goog-textarea', function() {
+		// detect input changes in this textarea
+		$(this).bind('input propertychange', function() {
+			var btnSave = $(this).next().find($('.annotorious-editor-button-save'));
+			btnSave.hide();
+
+			if ($.trim($(this).val())) {
+				// if the trimmed textarea is not empty
+				btnSave.show();
+			}
+		});
 	});
 });
