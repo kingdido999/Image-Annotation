@@ -44,34 +44,24 @@ $(document).ready(function() {
 			  			editable: editable
 			  		}
 
-			  		// Widgets and annotations are hidden by default
-					anno.hideSelectionWidget(url);
-					anno.hideAnnotations(url);
 					anno.addAnnotation(annotation);
 			  	});
 			  }
 		});
+
+		// Widgets and annotations are hidden by default
+		anno.hideSelectionWidget();
+		anno.hideAnnotations();
 	});
 
 	// Show annotations when mouse enters the image
-	$(imageSelector).mouseenter(function() {
-		var url = $(this)[0]['src'];
-		// Show widget and annotations
-		anno.showSelectionWidget(url);
-		anno.showAnnotations(url);
+	anno.addHandler('onMouseOverItem', function(event) {
+		anno.showSelectionWidget();
+		anno.showAnnotations();
 	});
 
-	// DOES NOT TRIGGER...Need to fix
-	// $('.annotorious-annotationlayer').mouseleave(function() {
-	// 	var url = $(this).find('img')[0]['src'];
-	// 	// Hide widget and annotations
-	// 	anno.hideSelectionWidget(url);
-	// 	anno.hideAnnotations(url);
-	// });	
-
 	// Hide annotations when mouse leaves the image
-	$('.entry-content').mouseleave(function() {	
-		// Hide widget and annotations
+	anno.addHandler('onMouseOutOfItem', function(event) {
 		anno.hideSelectionWidget();
 		anno.hideAnnotations();
 	});
@@ -141,7 +131,7 @@ $(document).ready(function() {
 	// Correct edit textbox css position
 	// This is a css-position bug which shows edit textbox position incorrectly 
 	// caused by the process of adding annotations (reason unknown)
-	$('.annotorious-popup-button.annotorious-popup-button-edit').click(function() {
+	$(document).on('click', '.annotorious-popup-button.annotorious-popup-button-edit', function() {
 		var top = $(this).parent().parent().css("top");
 		var editor = $(this).parent().parent().next();
 		editor.css("top", top);
